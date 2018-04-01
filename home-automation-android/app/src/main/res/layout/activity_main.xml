@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jamesmcgarr.me.homeautomationandroid.activities.MainActivity">
+
+    <Button
+        android:id="@+id/getHeatingStatusBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get Heating Status"/>
+    <Button
+        android:id="@+id/setHeatingOnBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Heating On"
+        android:layout_below="@+id/getHeatingStatusBtn"/>
+    <Button
+        android:id="@+id/setHeatingOffBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Heating Off"
+        android:layout_below="@+id/setHeatingOnBtn"/>
+
+    <TextView
+        android:id="@+id/outputTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setHeatingOffBtn"/>
+
+</RelativeLayout>
