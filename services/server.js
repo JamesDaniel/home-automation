@@ -1,12 +1,6 @@
 var restify = require('restify');
 var mongoose = require("mongoose");
-
-// todo Add correct values for the following variables.
-var listeningPort = -1;
-var databaseUser = "";
-var databasePass = "";
-var databaseAddr = "";
-var databaseName = "";
+var dateTime = require('node-datetime');
 
 var server = restify.createServer({
     version: '1.0.0'
@@ -18,30 +12,39 @@ server.get('/livingRoom/oilFilled1', function (req, res, next) {
 });
 server.post('/livingRoom/oilFilled1/off', function(req, res, next) {
     console.log("Turning oilFilled1 off");
-    heatingStatus.update({}, {oilFilled1: 'off'}, function() {
+    heatingStatus.update({}, {oilFilled1: 'off', lastUpdated: getCurrentTime()}, function() {
         res.json({oilFilled1: "off"});
     });
     next();
 });
 server.post('/livingRoom/oilFilled1/on', function(req, res, next) {
     console.log("Turning oilFilled1 on");
-    heatingStatus.update({}, {oilFilled1: 'on'}, function() {
+    heatingStatus.update({}, {oilFilled1: 'on', lastUpdated: getCurrentTime()}, function() {
         res.json({oilFilled1: "on"});
     });
     next();
 });
+server.post('/livingRoom/temperature/:temperature', function(req, res, next) {
+    console.log("TempC: " +req.params.temperature);
+    heatingStatus.update({}, {temperatureC: req.params.temperature, lastUpdated: getCurrentTime()}, function() {
+        res.json({temperatureC: req.params.temperature});
+    });
+    next();
+});
 
-server.listen(listeningPort, function() {
+server.listen(8080, function() {
     console.log('%s listening at %s', server.name, server.url);
 });
 
-// Connect to the db
-mongoose.connect('mongodb://'+databaseUser+':'+databasePass+'@'+databaseAddr+'/'+databaseName);
+// todo Connect to the db
+mongoose.connect('mongodb://');
 
 // create model for data
 var Schema = mongoose.Schema;
 var heatingStatus = mongoose.model('heatingStatus', new Schema({
-    oilFilled1: {type:String}
+    oilFilled1: {type:String},
+    temperatureC: {type:String},
+    lastUpdated: {type:String}
 }), 'heatingStatus');
 
 // response with database data
@@ -54,4 +57,11 @@ function respondLivingOilFilled1(res) {
         };
         res.json(jsonResponse);
     });
+}
+
+function getCurrentTime() {
+    var dt = dateTime.create();
+    var formatted = dt.format('Y-m-d H:M:S');
+    console.log(formatted);
+    return formatted;
 }
