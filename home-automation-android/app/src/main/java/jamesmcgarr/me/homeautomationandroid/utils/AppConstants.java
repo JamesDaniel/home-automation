@@ -9,5 +9,6 @@ public class AppConstants {
     public static final String HEATER_STATUS = "/livingRoom/oilFilled1";
     public static final String HEATER_ON = "/livingRoom/oilFilled1/on";
     public static final String HEATER_OFF = "/livingRoom/oilFilled1/off";
+    public static final String HEATER_ACTIVE = "/livingRoom/heartbeatOilFilled1";
 
 }

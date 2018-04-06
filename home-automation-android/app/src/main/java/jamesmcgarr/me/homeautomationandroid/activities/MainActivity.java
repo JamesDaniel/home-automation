@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button setHeatingOnBtn;
     private Button setHeatingOffBtn;
     private TextView textView;
+    private Button isHeaterActiveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setHeatingOnBtn = findViewById(R.id.setHeatingOnBtn);
         setHeatingOffBtn = findViewById(R.id.setHeatingOffBtn);
         textView = findViewById(R.id.outputTv);
+        isHeaterActiveBtn = findViewById(R.id.isHeaterActiveBtn);
 
         getHeatingStatusBtn.setOnClickListener(this);
         setHeatingOnBtn.setOnClickListener(this);
         setHeatingOffBtn.setOnClickListener(this);
+        isHeaterActiveBtn.setOnClickListener(this);
     }
 
     @Override
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.setHeatingOffBtn:
                 turnHeatingOff();
                 break;
+            case R.id.isHeaterActiveBtn:
+                getHeaterActive();
             default:
                 Log.e(TAG, "No case for view with ID: " + v.getId());
         }
@@ -82,5 +87,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void turnHeatingOf() {
         HttpUtils.post(AppConstants.HEATER_ON, new RequestParams(), new JsonHttpResponseHandler());
+    }
+
+    private void getHeaterActive() {
+        HttpUtils.get(AppConstants.HEATER_ACTIVE, new RequestParams(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TAG, "Response: " + response);
+                try {
+                    if (response.toString().indexOf("true") > -1) {
+                        textView.setText("Heating Unit 1 is alive.");
+                    } else if (response.toString().indexOf("false") > -1) {
+                        textView.setText("Heating Unit 1 is dead.");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

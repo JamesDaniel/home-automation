@@ -23,10 +23,17 @@
         android:text="Heating Off"
         android:layout_below="@+id/setHeatingOnBtn"/>
 
+    <Button
+        android:id="@+id/isHeaterActiveBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check Heating Unit Alive"
+        android:layout_below="@+id/setHeatingOffBtn"/>
+
     <TextView
         android:id="@+id/outputTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setHeatingOffBtn"/>
+        android:layout_below="@+id/isHeaterActiveBtn"/>
 
 </RelativeLayout>
