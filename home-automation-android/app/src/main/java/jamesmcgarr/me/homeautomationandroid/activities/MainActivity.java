@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.getHeatingStatusBtn:
-                callApi();
+                isHeatingOnOff();
                 break;
             case R.id.setHeatingOnBtn:
-                turnHeatingOf();
+                turnHeatingOn();
                 break;
             case R.id.setHeatingOffBtn:
                 turnHeatingOff();
@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void callApi() {
-        HttpUtils.get(AppConstants.HEATER_STATUS, new RequestParams(), new JsonHttpResponseHandler() {
+    private void isHeatingOnOff() {
+        HttpUtils.get(AppConstants.MAINS_APPLIANCES, AppConstants.HEATER_STATUS, new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d(TAG, "Response: " + response);
@@ -82,15 +82,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void turnHeatingOff() {
-        HttpUtils.post(AppConstants.HEATER_OFF, new RequestParams(), new JsonHttpResponseHandler());
+        HttpUtils.post(AppConstants.MAINS_APPLIANCES, AppConstants.HEATER_OFF, new RequestParams(), new JsonHttpResponseHandler());
     }
 
-    private void turnHeatingOf() {
-        HttpUtils.post(AppConstants.HEATER_ON, new RequestParams(), new JsonHttpResponseHandler());
+    private void turnHeatingOn() {
+        HttpUtils.post(AppConstants.MAINS_APPLIANCES, AppConstants.HEATER_ON, new RequestParams(), new JsonHttpResponseHandler());
     }
 
     private void getHeaterActive() {
-        HttpUtils.get(AppConstants.HEATER_ACTIVE, new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get(AppConstants.SYSTEM_HEARTBEATS, AppConstants.HEATER_ACTIVE, new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d(TAG, "Response: " + response);

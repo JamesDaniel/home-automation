@@ -11,16 +11,16 @@ import com.loopj.android.http.RequestParams;
 public class HttpUtils {
 
     //todo fill in the server url+port
-    private static final String BASE_URL = "";
+    private static final String BASE_URL = "http://localhost:%s/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.get(getAbsoluteUrl(url), params, responseHandler);
+    public static void get(String port, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.get(String.format(getAbsoluteUrl(url), port), params, responseHandler);
     }
 
-    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.post(getAbsoluteUrl(url), params, responseHandler);
+    public static void post(String port, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.post(String.format(getAbsoluteUrl(url), port), params, responseHandler);
     }
 
     public static void getByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
