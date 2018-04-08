@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button setHeatingOffBtn;
     private TextView textView;
     private Button isHeaterActiveBtn;
+    private Button getTemperatureBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +38,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setHeatingOffBtn = findViewById(R.id.setHeatingOffBtn);
         textView = findViewById(R.id.outputTv);
         isHeaterActiveBtn = findViewById(R.id.isHeaterActiveBtn);
+        getTemperatureBtn = findViewById(R.id.getTemperatureBtn);
 
         getHeatingStatusBtn.setOnClickListener(this);
         setHeatingOnBtn.setOnClickListener(this);
         setHeatingOffBtn.setOnClickListener(this);
         isHeaterActiveBtn.setOnClickListener(this);
+        getTemperatureBtn.setOnClickListener(this);
     }
 
     @Override
@@ -58,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.isHeaterActiveBtn:
                 getHeaterActive();
+                break;
+            case R.id.getTemperatureBtn:
+                getTemperature();
+                break;
             default:
                 Log.e(TAG, "No case for view with ID: " + v.getId());
         }
@@ -100,6 +107,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else if (response.toString().indexOf("false") > -1) {
                         textView.setText("Heating Unit 1 is dead.");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getTemperature() {
+        HttpUtils.get(AppConstants.ENVIRONMENT_CONTROL, AppConstants.TEMPERATURE, new RequestParams(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TAG, "Response: " + response);
+                try {
+                    JSONObject obj = response;
+                    String temperature = (String) obj.get("temperatureC");
+                    textView.setText("The temperature is: " + temperature + " degrees C.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

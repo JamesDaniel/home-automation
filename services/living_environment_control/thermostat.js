@@ -36,3 +36,15 @@ heating.post('/livingRoom/temperature/:temperature', function(req, res, next) {
     });
     next();
 });
+// 2. Get temperature
+heating.get('/livingRoom/temperature/', function (req, res, next) {
+    heatingStatus.find({}).exec(function(error,collection) {
+        console.log("callback for model query");
+        console.log(JSON.stringify(collection[0], null, 4));
+        var jsonResponse = {
+            temperatureC: collection[0].temperatureC
+        };
+        res.json(jsonResponse);
+    });
+    next();
+});
