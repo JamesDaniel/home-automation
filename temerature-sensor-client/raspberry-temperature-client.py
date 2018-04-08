@@ -14,3 +14,5 @@ while True:
 	temperatureC = str(ser.readline()).strip()
 	r = requests.post(url+temperatureC)
 	print temperatureC
+        time.sleep(5)
+
